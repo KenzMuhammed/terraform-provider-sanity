@@ -5,6 +5,8 @@ import (
 	"os"
 
 	"github.com/KenzMuhammed/terraform-provider-sanity/internal/client"
+	datasetds "github.com/KenzMuhammed/terraform-provider-sanity/internal/datasources/dataset"
+	projectds "github.com/KenzMuhammed/terraform-provider-sanity/internal/datasources/project"
 	"github.com/KenzMuhammed/terraform-provider-sanity/internal/resources/cors_origin"
 	"github.com/KenzMuhammed/terraform-provider-sanity/internal/resources/dataset"
 	"github.com/KenzMuhammed/terraform-provider-sanity/internal/resources/project"
@@ -130,6 +132,7 @@ func (p *SanityProvider) Resources(ctx context.Context) []func() resource.Resour
 // DataSources defines the data sources implemented in the provider.
 func (p *SanityProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		// Data sources will be registered here in Milestone 6
+		projectds.NewProjectDataSource,
+		datasetds.NewDatasetDataSource,
 	}
 }
