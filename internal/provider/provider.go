@@ -5,7 +5,10 @@ import (
 	"os"
 
 	"github.com/KenzMuhammed/terraform-provider-sanity/internal/client"
+	"github.com/KenzMuhammed/terraform-provider-sanity/internal/resources/cors_origin"
+	"github.com/KenzMuhammed/terraform-provider-sanity/internal/resources/dataset"
 	"github.com/KenzMuhammed/terraform-provider-sanity/internal/resources/project"
+	"github.com/KenzMuhammed/terraform-provider-sanity/internal/resources/webhook"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -118,6 +121,9 @@ func (p *SanityProvider) Configure(ctx context.Context, req provider.ConfigureRe
 func (p *SanityProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		project.NewProjectResource,
+		dataset.NewDatasetResource,
+		cors_origin.NewCorsOriginResource,
+		webhook.NewWebhookResource,
 	}
 }
 
