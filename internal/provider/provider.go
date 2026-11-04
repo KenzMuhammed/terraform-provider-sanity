@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/KenzMuhammed/terraform-provider-sanity/internal/client"
+	"github.com/KenzMuhammed/terraform-provider-sanity/internal/resources/project"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -116,7 +117,7 @@ func (p *SanityProvider) Configure(ctx context.Context, req provider.ConfigureRe
 // Resources defines the resources implemented in the provider.
 func (p *SanityProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		// Resources will be registered here as they are implemented in Milestone 4 & 5
+		project.NewProjectResource,
 	}
 }
 
