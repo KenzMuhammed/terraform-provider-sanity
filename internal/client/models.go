@@ -105,3 +105,31 @@ type UpdateWebhookRequest struct {
 	Headers          map[string]string `json:"headers,omitempty"`
 	IsDisabledByUser *bool             `json:"isDisabledByUser,omitempty"`
 }
+
+// ProjectInvitation represents a project member invitation.
+type ProjectInvitation struct {
+	ID         string                 `json:"id"`
+	Email      string                 `json:"email"`
+	ProjectID  string                 `json:"projectId"`
+	Roles      []ProjectRole          `json:"roles,omitempty"`
+	IsAccepted bool                   `json:"isAccepted"`
+	IsRevoked  bool                   `json:"isRevoked"`
+	CreatedAt  time.Time              `json:"createdAt"`
+}
+
+// ProjectRole represents a role attached to a member or invitation.
+type ProjectRole struct {
+	Name  string `json:"name"`
+	Title string `json:"title,omitempty"`
+}
+
+// CreateInvitationRequest is the payload for inviting a member.
+type CreateInvitationRequest struct {
+	Email string `json:"email"`
+	Role  string `json:"role"`
+}
+
+// CreateInvitationResponse holds the returned invitation ID.
+type CreateInvitationResponse struct {
+	InvitationID string `json:"invitationId"`
+}

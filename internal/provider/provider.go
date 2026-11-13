@@ -9,6 +9,7 @@ import (
 	projectds "github.com/KenzMuhammed/terraform-provider-sanity/internal/datasources/project"
 	"github.com/KenzMuhammed/terraform-provider-sanity/internal/resources/cors_origin"
 	"github.com/KenzMuhammed/terraform-provider-sanity/internal/resources/dataset"
+	"github.com/KenzMuhammed/terraform-provider-sanity/internal/resources/invitation"
 	"github.com/KenzMuhammed/terraform-provider-sanity/internal/resources/project"
 	"github.com/KenzMuhammed/terraform-provider-sanity/internal/resources/webhook"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -126,6 +127,7 @@ func (p *SanityProvider) Resources(ctx context.Context) []func() resource.Resour
 		dataset.NewDatasetResource,
 		cors_origin.NewCorsOriginResource,
 		webhook.NewWebhookResource,
+		invitation.NewInvitationResource,
 	}
 }
 

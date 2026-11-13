@@ -313,3 +313,53 @@ func (c *Client) DeleteWebhook(ctx context.Context, projectID, webhookID string)
 	url := fmt.Sprintf("%s/%s/hooks/projects/%s/%s", c.webhookBaseURL(projectID), c.apiVersion, projectID, webhookID)
 	return c.doRequest(ctx, http.MethodDelete, url, nil, nil)
 }
+
+// ---------------------------------------------------------------------------
+// Project Member Invitation Methods
+// ---------------------------------------------------------------------------
+
+// CreateInvitation sends an invitation to add a member to a project.
+func (c *Client) CreateInvitation(ctx context.Context, projectID string, req CreateInvitationRequest) (*ProjectInvitation, error) {
+	url := fmt.Sprintf("%s/%s/invitations/project/%s", c.baseURL, c.apiVersion, projectID)
+	var resp CreateInvitationResponse
+	if err := c.doRequest(ctx, http.MethodPost, url, req, &resp); err != nil {
+		return nil, err
+	}
+
+	// Fetch full invitation details
+	return c.GetInvitation(ctx, projectID, resp.InvitationID)
+}
+
+// GetInvitation fetches a specific project invitation by its ID.
+func (c *Client) GetInvitation(ctx context.Context, projectID, invitationID string) (*ProjectInvitation, error) {
+	invitations, err := c.ListInvitations(ctx, projectID)
+	if err != nil {
+		return nil, err
+	}
+	for _, inv := range invitations {
+		if inv.ID == invitationID {
+			return &inv, nil
+		}
+	}
+	return nil, &APIError{
+		StatusCode: http.StatusNotFound,
+		ErrorType:  "Not Found",
+		Message:    fmt.Sprintf("Invitation %q not found in project %q", invitationID, projectID),
+	}
+}
+
+// ListInvitations lists all pending invitations for a project.
+func (c *Client) ListInvitations(ctx context.Context, projectID string) ([]ProjectInvitation, error) {
+	url := fmt.Sprintf("%s/%s/invitations/project/%s", c.baseURL, c.apiVersion, projectID)
+	var invitations []ProjectInvitation
+	if err := c.doRequest(ctx, http.MethodGet, url, nil, &invitations); err != nil {
+		return nil, err
+	}
+	return invitations, nil
+}
+
+// DeleteInvitation revokes a project member invitation.
+func (c *Client) DeleteInvitation(ctx context.Context, projectID, invitationID string) error {
+	url := fmt.Sprintf("%s/%s/invitations/project/%s/%s", c.baseURL, c.apiVersion, projectID, invitationID)
+	return c.doRequest(ctx, http.MethodDelete, url, nil, nil)
+}

@@ -251,3 +251,61 @@ func TestClient_IsNotFound(t *testing.T) {
 		t.Fatalf("expected IsNotFound(err) to be true for 404, got false (err: %v)", err)
 	}
 }
+
+func TestClient_InvitationCRUD(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.Method == http.MethodPost && r.URL.Path == "/v2024-01-01/invitations/project/p1":
+			w.WriteHeader(http.StatusCreated)
+			_ = json.NewEncoder(w).Encode(CreateInvitationResponse{
+				InvitationID: "inv-123",
+			})
+
+		case r.Method == http.MethodGet && r.URL.Path == "/v2024-01-01/invitations/project/p1":
+			_ = json.NewEncoder(w).Encode([]ProjectInvitation{
+				{
+					ID:        "inv-123",
+					Email:     "dev@example.com",
+					ProjectID: "p1",
+					Roles:     []ProjectRole{{Name: "editor"}},
+				},
+			})
+
+		case r.Method == http.MethodDelete && r.URL.Path == "/v2024-01-01/invitations/project/p1/inv-123":
+			w.WriteHeader(http.StatusOK)
+
+		default:
+			w.WriteHeader(http.StatusNotFound)
+		}
+	}))
+	defer server.Close()
+
+	c, _ := NewClient("test-token", WithBaseURL(server.URL))
+	ctx := context.Background()
+
+	// 1. Create
+	inv, err := c.CreateInvitation(ctx, "p1", CreateInvitationRequest{
+		Email: "dev@example.com",
+		Role:  "editor",
+	})
+	if err != nil {
+		t.Fatalf("CreateInvitation failed: %v", err)
+	}
+	if inv.ID != "inv-123" || inv.Email != "dev@example.com" {
+		t.Fatalf("unexpected invitation response: %+v", inv)
+	}
+
+	// 2. Read
+	got, err := c.GetInvitation(ctx, "p1", "inv-123")
+	if err != nil {
+		t.Fatalf("GetInvitation failed: %v", err)
+	}
+	if got.Email != "dev@example.com" {
+		t.Fatalf("unexpected invitation email: %s", got.Email)
+	}
+
+	// 3. Delete
+	if err := c.DeleteInvitation(ctx, "p1", "inv-123"); err != nil {
+		t.Fatalf("DeleteInvitation failed: %v", err)
+	}
+}
