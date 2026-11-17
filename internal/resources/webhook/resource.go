@@ -319,14 +319,18 @@ func (r *WebhookResource) Update(ctx context.Context, req resource.UpdateRequest
 	apiVer := plan.APIVersion.ValueString()
 	method := plan.HTTPMethod.ValueString()
 	disabled := plan.IsDisabledByUser.ValueBool()
+	includeDrafts := plan.IncludeDrafts.ValueBool()
+	includeAllVersions := plan.IncludeAllVersions.ValueBool()
 
 	updateReq := client.UpdateWebhookRequest{
-		Name:             &name,
-		URL:              &urlStr,
-		Dataset:          &dataset,
-		APIVersion:       &apiVer,
-		HTTPMethod:       &method,
-		IsDisabledByUser: &disabled,
+		Name:               &name,
+		URL:                &urlStr,
+		Dataset:            &dataset,
+		APIVersion:         &apiVer,
+		HTTPMethod:         &method,
+		IncludeDrafts:      &includeDrafts,
+		IncludeAllVersions: &includeAllVersions,
+		IsDisabledByUser:   &disabled,
 	}
 
 	if !plan.Secret.IsNull() {
@@ -361,6 +365,8 @@ func (r *WebhookResource) Update(ctx context.Context, req resource.UpdateRequest
 	plan.Dataset = types.StringValue(webhook.Dataset)
 	plan.APIVersion = types.StringValue(webhook.APIVersion)
 	plan.HTTPMethod = types.StringValue(webhook.HTTPMethod)
+	plan.IncludeDrafts = types.BoolValue(webhook.IncludeDrafts)
+	plan.IncludeAllVersions = types.BoolValue(webhook.IncludeAllVersions)
 	plan.IsDisabledByUser = types.BoolValue(webhook.IsDisabledByUser)
 
 	diags = resp.State.Set(ctx, plan)

@@ -31,7 +31,7 @@ type ProjectDataSource struct {
 // ProjectDataSourceModel maps the data source schema data to Go types.
 type ProjectDataSourceModel struct {
 	ID             types.String `tfsdk:"id"`
-	DisplayName    types.String `tfsdk:"display_name"`
+	ProjectName    types.String `tfsdk:"project_name"`
 	OrganizationID types.String `tfsdk:"organization_id"`
 	StudioHost     types.String `tfsdk:"studio_host"`
 	CreatedAt      types.String `tfsdk:"created_at"`
@@ -52,8 +52,8 @@ func (d *ProjectDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 				Description: "The unique identifier of the Sanity project (e.g. `72xj82oo`).",
 				Required:    true,
 			},
-			"display_name": schema.StringAttribute{
-				Description: "The human-readable display name of the Sanity project.",
+			"project_name": schema.StringAttribute{
+				Description: "The human-readable name of the Sanity project.",
 				Computed:    true,
 			},
 			"organization_id": schema.StringAttribute{
@@ -117,7 +117,7 @@ func (d *ProjectDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		return
 	}
 
-	state.DisplayName = types.StringValue(project.DisplayName)
+	state.ProjectName = types.StringValue(project.DisplayName)
 	if project.OrganizationID != "" {
 		state.OrganizationID = types.StringValue(project.OrganizationID)
 	} else {

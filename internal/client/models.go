@@ -94,27 +94,29 @@ type CreateWebhookRequest struct {
 
 // UpdateWebhookRequest is the payload for updating a webhook via PATCH.
 type UpdateWebhookRequest struct {
-	Name             *string           `json:"name,omitempty"`
-	URL              *string           `json:"url,omitempty"`
-	Dataset          *string           `json:"dataset,omitempty"`
-	HTTPMethod       *string           `json:"httpMethod,omitempty"`
-	APIVersion       *string           `json:"apiVersion,omitempty"`
-	Secret           *string           `json:"secret,omitempty"`
-	Filter           *string           `json:"filter,omitempty"`
-	Projection       *string           `json:"projection,omitempty"`
-	Headers          map[string]string `json:"headers,omitempty"`
-	IsDisabledByUser *bool             `json:"isDisabledByUser,omitempty"`
+	Name               *string           `json:"name,omitempty"`
+	URL                *string           `json:"url,omitempty"`
+	Dataset            *string           `json:"dataset,omitempty"`
+	HTTPMethod         *string           `json:"httpMethod,omitempty"`
+	APIVersion         *string           `json:"apiVersion,omitempty"`
+	Secret             *string           `json:"secret,omitempty"`
+	Filter             *string           `json:"filter,omitempty"`
+	Projection         *string           `json:"projection,omitempty"`
+	Headers            map[string]string `json:"headers,omitempty"`
+	IncludeDrafts      *bool             `json:"includeDrafts,omitempty"`
+	IncludeAllVersions *bool             `json:"includeAllVersions,omitempty"`
+	IsDisabledByUser   *bool             `json:"isDisabledByUser,omitempty"`
 }
 
 // ProjectInvitation represents a project member invitation.
 type ProjectInvitation struct {
-	ID         string                 `json:"id"`
-	Email      string                 `json:"email"`
-	ProjectID  string                 `json:"projectId"`
-	Roles      []ProjectRole          `json:"roles,omitempty"`
-	IsAccepted bool                   `json:"isAccepted"`
-	IsRevoked  bool                   `json:"isRevoked"`
-	CreatedAt  time.Time              `json:"createdAt"`
+	ID         string        `json:"id"`
+	Email      string        `json:"email"`
+	ProjectID  string        `json:"projectId"`
+	Roles      []ProjectRole `json:"roles,omitempty"`
+	IsAccepted bool          `json:"isAccepted"`
+	IsRevoked  bool          `json:"isRevoked"`
+	CreatedAt  time.Time     `json:"createdAt"`
 }
 
 // ProjectRole represents a role attached to a member or invitation.

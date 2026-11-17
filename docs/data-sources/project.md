@@ -19,7 +19,7 @@ data "sanity_project" "existing" {
 }
 
 output "project_name" {
-  value = data.sanity_project.existing.display_name
+  value = data.sanity_project.existing.project_name
 }
 ```
 
@@ -33,7 +33,7 @@ output "project_name" {
 ### Read-Only
 
 - `created_at` (String) Timestamp when the project was created.
-- `display_name` (String) The human-readable display name of the Sanity project.
 - `organization_id` (String) The organization ID to which this project belongs.
+- `project_name` (String) The human-readable name of the Sanity project.
 - `studio_host` (String) The custom studio subdomain hosted on sanity.studio.
 - `updated_at` (String) Timestamp when the project was last updated.

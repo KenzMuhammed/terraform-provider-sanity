@@ -15,7 +15,7 @@ Manages a Sanity.io project. Projects are the top-level container for datasets, 
 ```terraform
 # Create a new Sanity project
 resource "sanity_project" "example" {
-  display_name    = "Production Application"
+  project_name    = "Production Application"
   organization_id = "o1nhulfhp"
 }
 
@@ -30,7 +30,7 @@ resource "sanity_project" "example" {
 
 ### Required
 
-- `display_name` (String) The human-readable display name of the Sanity project.
+- `project_name` (String) The human-readable name of the Sanity project.
 
 ### Optional
 

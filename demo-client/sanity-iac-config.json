@@ -1,0 +1,62 @@
+{
+  "project": {
+    "id": "a1o8pvyj",
+    "project_name": "demo-client-corp"
+  },
+  "environments": {
+    "qa": {
+      "dataset_name": "qa",
+      "acl_mode": "public",
+      "cors_origins": [
+        {
+          "origin": "https://demo-client-qa.example.com",
+          "allow_credentials": false
+        }
+      ],
+      "webhook": {
+        "name": "QA Deploy Hook",
+        "url": "https://example.com/webhook/qa",
+        "api_version": "v2024-01-01",
+        "http_method": "POST",
+        "secret": "qa-webhook-secret-key",
+        "include_drafts": true,
+        "include_all_versions": false,
+        "is_disabled_by_user": false
+      }
+    },
+    "production": {
+      "dataset_name": "production",
+      "acl_mode": "public",
+      "cors_origins": [
+        {
+          "origin": "https://demo-client.example.com",
+          "allow_credentials": false
+        }
+      ],
+      "webhook": {
+        "name": "Production Deploy Hook",
+        "url": "https://example.com/webhook/prod",
+        "api_version": "v2024-01-01",
+        "http_method": "POST",
+        "secret": "prod-webhook-secret-key",
+        "include_drafts": false,
+        "include_all_versions": false,
+        "is_disabled_by_user": false
+      }
+    }
+  },
+  "common": {
+    "cors_origins": [
+      {
+        "origin": "http://localhost:3333",
+        "allow_credentials": true
+      }
+    ],
+    "invitations": [
+      {
+        "email": "developer@demo-client.com",
+        "role": "editor"
+      }
+    ]
+  }
+}

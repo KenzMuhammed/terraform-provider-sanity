@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -78,12 +79,12 @@ func (r *CorsOriginResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"allow_credentials": schema.BoolAttribute{
-				Description:   "Whether to allow requests with credentials (cookies, authorization headers). Required for Sanity Studio login.",
-				Optional:      true,
-				Computed:      true,
-				Default:       booldefault.StaticBool(false),
+				Description: "Whether to allow requests with credentials (cookies, authorization headers). Required for Sanity Studio login.",
+				Optional:    true,
+				Computed:    true,
+				Default:     booldefault.StaticBool(false),
 				PlanModifiers: []planmodifier.Bool{
-					// Changes require replacement since Sanity has no CORS update endpoint
+					boolplanmodifier.RequiresReplace(),
 				},
 			},
 			"created_at": schema.StringAttribute{

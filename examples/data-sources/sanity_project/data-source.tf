@@ -4,5 +4,5 @@ data "sanity_project" "existing" {
 }
 
 output "project_name" {
-  value = data.sanity_project.existing.display_name
+  value = data.sanity_project.existing.project_name
 }

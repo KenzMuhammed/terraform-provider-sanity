@@ -33,15 +33,15 @@ func TestProjectResource_Schema(t *testing.T) {
 		t.Fatalf("schema diagnostics error: %v", resp.Diagnostics.Errors())
 	}
 
-	requiredAttrs := []string{"id", "display_name", "organization_id", "studio_host", "created_at", "updated_at"}
+	requiredAttrs := []string{"id", "project_name", "organization_id", "studio_host", "created_at", "updated_at"}
 	for _, attr := range requiredAttrs {
 		if _, ok := resp.Schema.Attributes[attr]; !ok {
 			t.Errorf("expected attribute %q to exist in schema", attr)
 		}
 	}
 
-	if !resp.Schema.Attributes["display_name"].IsRequired() {
-		t.Error("expected display_name attribute to be required")
+	if !resp.Schema.Attributes["project_name"].IsRequired() {
+		t.Error("expected project_name attribute to be required")
 	}
 
 	if !resp.Schema.Attributes["id"].IsComputed() {

@@ -35,7 +35,7 @@ type ProjectResource struct {
 // ProjectResourceModel maps the resource schema data to Go types.
 type ProjectResourceModel struct {
 	ID             types.String `tfsdk:"id"`
-	DisplayName    types.String `tfsdk:"display_name"`
+	ProjectName    types.String `tfsdk:"project_name"`
 	OrganizationID types.String `tfsdk:"organization_id"`
 	StudioHost     types.String `tfsdk:"studio_host"`
 	CreatedAt      types.String `tfsdk:"created_at"`
@@ -59,8 +59,8 @@ func (r *ProjectResource) Schema(ctx context.Context, req resource.SchemaRequest
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"display_name": schema.StringAttribute{
-				Description: "The human-readable display name of the Sanity project.",
+			"project_name": schema.StringAttribute{
+				Description: "The human-readable name of the Sanity project.",
 				Required:    true,
 			},
 			"organization_id": schema.StringAttribute{
@@ -123,14 +123,14 @@ func (r *ProjectResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 
 	createReq := client.CreateProjectRequest{
-		DisplayName: plan.DisplayName.ValueString(),
+		DisplayName: plan.ProjectName.ValueString(),
 	}
 	if !plan.OrganizationID.IsNull() && !plan.OrganizationID.IsUnknown() {
 		createReq.OrganizationID = plan.OrganizationID.ValueString()
 	}
 
 	tflog.Info(ctx, "Creating Sanity project", map[string]interface{}{
-		"displayName": createReq.DisplayName,
+		"projectName": createReq.DisplayName,
 	})
 
 	project, err := r.client.CreateProject(ctx, createReq)
@@ -143,7 +143,7 @@ func (r *ProjectResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 
 	plan.ID = types.StringValue(project.ID)
-	plan.DisplayName = types.StringValue(project.DisplayName)
+	plan.ProjectName = types.StringValue(project.DisplayName)
 	if project.OrganizationID != "" {
 		plan.OrganizationID = types.StringValue(project.OrganizationID)
 	} else {
@@ -192,7 +192,7 @@ func (r *ProjectResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 
-	state.DisplayName = types.StringValue(project.DisplayName)
+	state.ProjectName = types.StringValue(project.DisplayName)
 	if project.OrganizationID != "" {
 		state.OrganizationID = types.StringValue(project.OrganizationID)
 	}
@@ -218,10 +218,10 @@ func (r *ProjectResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 
 	projectID := plan.ID.ValueString()
-	displayName := plan.DisplayName.ValueString()
+	projectName := plan.ProjectName.ValueString()
 
 	updateReq := client.UpdateProjectRequest{
-		DisplayName: &displayName,
+		DisplayName: &projectName,
 	}
 
 	tflog.Info(ctx, "Updating Sanity project", map[string]interface{}{
@@ -237,7 +237,7 @@ func (r *ProjectResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	plan.DisplayName = types.StringValue(project.DisplayName)
+	plan.ProjectName = types.StringValue(project.DisplayName)
 	if project.StudioHost != nil && *project.StudioHost != "" {
 		plan.StudioHost = types.StringValue(*project.StudioHost)
 	} else {

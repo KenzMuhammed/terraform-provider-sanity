@@ -1,6 +1,6 @@
 # Create a new Sanity project
 resource "sanity_project" "example" {
-  display_name    = "Production Application"
+  project_name    = "Production Application"
   organization_id = "o1nhulfhp"
 }
 

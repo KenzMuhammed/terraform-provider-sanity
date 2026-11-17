@@ -31,3 +31,5 @@ crash.*.log
 # OS-specific
 .DS_Store
 Thumbs.db
+*.asc
+*.key
